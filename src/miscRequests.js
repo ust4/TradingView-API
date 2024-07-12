@@ -1,4 +1,3 @@
-const os = require('os');
 const axios = require('axios');
 
 const PineIndicator = require('./classes/PineIndicator');
@@ -353,7 +352,6 @@ module.exports = {
         headers: {
           referer: 'https://www.tradingview.com',
           'Content-Type': 'application/x-www-form-urlencoded',
-          'User-agent': `${UA} (${os.version()}; ${os.platform()}; ${os.arch()})`,
         },
       },
     );
