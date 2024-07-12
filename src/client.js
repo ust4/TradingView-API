@@ -1,5 +1,3 @@
-const WebSocket = require('ws');
-
 const misc = require('./miscRequests');
 const protocol = require('./protocol');
 
