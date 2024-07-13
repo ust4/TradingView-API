@@ -224,9 +224,7 @@ module.exports = class Client {
     if (clientOptions.DEBUG) global.TW_DEBUG = clientOptions.DEBUG;
 
     const server = clientOptions.server || 'data';
-    this.#ws = new WebSocket(`wss://${server}.tradingview.com/socket.io/websocket?&type=chart`, {
-      origin: 'https://s.tradingview.com',
-    });
+    this.#ws = server;
 
     if (clientOptions.token) {
       misc.getUser(
@@ -251,17 +249,19 @@ module.exports = class Client {
       this.sendQueue();
     }
 
-    this.#ws.on('open', () => {
+    this.#ws.onopen = () => {
       this.#handleEvent('connected');
       this.sendQueue();
-    });
+    };
 
-    this.#ws.on('close', () => {
+    this.#ws.onclose = () => {
       this.#logged = false;
       this.#handleEvent('disconnected');
-    });
+    };
 
-    this.#ws.on('message', (data) => this.#parsePacket(data));
+    this.#ws.onmessage = (msg) => {
+      this.#parsePacket(msg.data);
+    };
   }
 
   /** @type {ClientBridge} */
